@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TestDevModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="empleados">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="userid" Type="int" />
+    <Property Name="Sueldo" Type="money" />
+    <Property Name="FechaIngreso" Type="date" />
+  </EntityType>
+  <EntityType Name="usuarios">
+    <Key>
+      <PropertyRef Name="userid" />
+    </Key>
+    <Property Name="userid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Login" Type="varchar" MaxLength="100" />
+    <Property Name="Nombre" Type="varchar" MaxLength="100" />
+    <Property Name="Paterno" Type="varchar" MaxLength="100" />
+    <Property Name="Materno" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'TestDev.dbo.vw_usuarios' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="vw_usuarios">
+    <Key>
+      <PropertyRef Name="userid" />
+    </Key>
+    <Property Name="Login" Type="varchar" MaxLength="100" />
+    <Property Name="Nombre" Type="varchar" MaxLength="100" />
+    <Property Name="Paterno" Type="varchar" MaxLength="100" />
+    <Property Name="Materno" Type="varchar" MaxLength="100" />
+    <Property Name="Sueldo" Type="money" />
+    <Property Name="FechaIngreso" Type="date" />
+    <Property Name="userid" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__empleados__useri__3B75D760">
+    <End Role="usuarios" Type="Self.usuarios" Multiplicity="0..1" />
+    <End Role="empleados" Type="Self.empleados" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuarios">
+        <PropertyRef Name="userid" />
+      </Principal>
+      <Dependent Role="empleados">
+        <PropertyRef Name="userid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TestDevModelStoreContainer">
+    <EntitySet Name="empleados" EntityType="Self.empleados" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="usuarios" EntityType="Self.usuarios" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="vw_usuarios" EntityType="Self.vw_usuarios" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vw_usuarios].[Login] AS [Login], 
+    [vw_usuarios].[Nombre] AS [Nombre], 
+    [vw_usuarios].[Paterno] AS [Paterno], 
+    [vw_usuarios].[Materno] AS [Materno], 
+    [vw_usuarios].[Sueldo] AS [Sueldo], 
+    [vw_usuarios].[FechaIngreso] AS [FechaIngreso], 
+    [vw_usuarios].[userid] AS [userid]
+    FROM [dbo].[vw_usuarios] AS [vw_usuarios]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK__empleados__useri__3B75D760" Association="Self.FK__empleados__useri__3B75D760">
+      <End Role="usuarios" EntitySet="usuarios" />
+      <End Role="empleados" EntitySet="empleados" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

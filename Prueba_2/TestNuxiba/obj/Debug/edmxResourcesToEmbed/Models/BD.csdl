@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TestDevModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="usuarios">
+    <Key>
+      <PropertyRef Name="userid" />
+    </Key>
+    <Property Name="userid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Login" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Paterno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Materno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="empleados" Relationship="TestDevModel.FK__empleados__useri__3B75D760" FromRole="usuarios" ToRole="empleados" />
+  </EntityType>
+  <EntityContainer Name="TestDevEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="usuarios" EntityType="Self.usuarios" />
+    <EntitySet Name="empleados" EntityType="TestDevModel.empleados" />
+    <AssociationSet Name="FK__empleados__useri__3B75D760" Association="TestDevModel.FK__empleados__useri__3B75D760">
+      <End Role="usuarios" EntitySet="usuarios" />
+      <End Role="empleados" EntitySet="empleados" />
+    </AssociationSet>
+    <EntitySet Name="vw_usuarios" EntityType="TestDevModel.vw_usuarios" />
+  </EntityContainer>
+  <EntityType Name="empleados">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="userid" Type="Int32" />
+    <Property Name="Sueldo" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="FechaIngreso" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="usuarios" Relationship="TestDevModel.FK__empleados__useri__3B75D760" FromRole="empleados" ToRole="usuarios" />
+  </EntityType>
+  <Association Name="FK__empleados__useri__3B75D760">
+    <End Type="TestDevModel.usuarios" Role="usuarios" Multiplicity="0..1" />
+    <End Type="TestDevModel.empleados" Role="empleados" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuarios">
+        <PropertyRef Name="userid" />
+      </Principal>
+      <Dependent Role="empleados">
+        <PropertyRef Name="userid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="vw_usuarios">
+    <Key>
+      <PropertyRef Name="userid" />
+    </Key>
+    <Property Name="Login" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Paterno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Materno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Sueldo" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="FechaIngreso" Type="DateTime" Precision="0" />
+    <Property Name="userid" Type="Int32" Nullable="false" />
+  </EntityType>
+</Schema>

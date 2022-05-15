@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TestDevModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="empleados">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userid" Type="int" />
+          <Property Name="Sueldo" Type="money" />
+          <Property Name="FechaIngreso" Type="date" />
+        </EntityType>
+        <EntityType Name="usuarios">
+          <Key>
+            <PropertyRef Name="userid" />
+          </Key>
+          <Property Name="userid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Login" Type="varchar" MaxLength="100" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" />
+          <Property Name="Paterno" Type="varchar" MaxLength="100" />
+          <Property Name="Materno" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'TestDev.dbo.vw_usuarios' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vw_usuarios">
+          <Key>
+            <PropertyRef Name="userid" />
+          </Key>
+          <Property Name="Login" Type="varchar" MaxLength="100" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" />
+          <Property Name="Paterno" Type="varchar" MaxLength="100" />
+          <Property Name="Materno" Type="varchar" MaxLength="100" />
+          <Property Name="Sueldo" Type="money" />
+          <Property Name="FechaIngreso" Type="date" />
+          <Property Name="userid" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__empleados__useri__3B75D760">
+          <End Role="usuarios" Type="Self.usuarios" Multiplicity="0..1" />
+          <End Role="empleados" Type="Self.empleados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuarios">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="empleados">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TestDevModelStoreContainer">
+          <EntitySet Name="empleados" EntityType="Self.empleados" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usuarios" EntityType="Self.usuarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vw_usuarios" EntityType="Self.vw_usuarios" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vw_usuarios].[Login] AS [Login], 
+    [vw_usuarios].[Nombre] AS [Nombre], 
+    [vw_usuarios].[Paterno] AS [Paterno], 
+    [vw_usuarios].[Materno] AS [Materno], 
+    [vw_usuarios].[Sueldo] AS [Sueldo], 
+    [vw_usuarios].[FechaIngreso] AS [FechaIngreso], 
+    [vw_usuarios].[userid] AS [userid]
+    FROM [dbo].[vw_usuarios] AS [vw_usuarios]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__empleados__useri__3B75D760" Association="Self.FK__empleados__useri__3B75D760">
+            <End Role="usuarios" EntitySet="usuarios" />
+            <End Role="empleados" EntitySet="empleados" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TestDevModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="usuarios">
+          <Key>
+            <PropertyRef Name="userid" />
+          </Key>
+          <Property Name="userid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Login" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Paterno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Materno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="empleados" Relationship="TestDevModel.FK__empleados__useri__3B75D760" FromRole="usuarios" ToRole="empleados" />
+        </EntityType>
+        <EntityContainer Name="TestDevEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="usuarios" EntityType="Self.usuarios" />
+          <EntitySet Name="empleados" EntityType="TestDevModel.empleados" />
+          <AssociationSet Name="FK__empleados__useri__3B75D760" Association="TestDevModel.FK__empleados__useri__3B75D760">
+            <End Role="usuarios" EntitySet="usuarios" />
+            <End Role="empleados" EntitySet="empleados" />
+          </AssociationSet>
+          <EntitySet Name="vw_usuarios" EntityType="TestDevModel.vw_usuarios" />
+        </EntityContainer>
+        <EntityType Name="empleados">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userid" Type="Int32" />
+          <Property Name="Sueldo" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="FechaIngreso" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="usuarios" Relationship="TestDevModel.FK__empleados__useri__3B75D760" FromRole="empleados" ToRole="usuarios" />
+        </EntityType>
+        <Association Name="FK__empleados__useri__3B75D760">
+          <End Type="TestDevModel.usuarios" Role="usuarios" Multiplicity="0..1" />
+          <End Type="TestDevModel.empleados" Role="empleados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuarios">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="empleados">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="vw_usuarios">
+          <Key>
+            <PropertyRef Name="userid" />
+          </Key>
+          <Property Name="Login" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Paterno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Materno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Sueldo" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="FechaIngreso" Type="DateTime" Precision="0" />
+          <Property Name="userid" Type="Int32" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TestDevModelStoreContainer" CdmEntityContainer="TestDevEntities">
+          <EntitySetMapping Name="usuarios">
+            <EntityTypeMapping TypeName="TestDevModel.usuarios">
+              <MappingFragment StoreEntitySet="usuarios">
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Paterno" ColumnName="Paterno" />
+                <ScalarProperty Name="Materno" ColumnName="Materno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="empleados">
+            <EntityTypeMapping TypeName="TestDevModel.empleados">
+              <MappingFragment StoreEntitySet="empleados">
+                <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
+                <ScalarProperty Name="Sueldo" ColumnName="Sueldo" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_usuarios">
+            <EntityTypeMapping TypeName="TestDevModel.vw_usuarios">
+              <MappingFragment StoreEntitySet="vw_usuarios">
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
+                <ScalarProperty Name="Sueldo" ColumnName="Sueldo" />
+                <ScalarProperty Name="Materno" ColumnName="Materno" />
+                <ScalarProperty Name="Paterno" ColumnName="Paterno" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

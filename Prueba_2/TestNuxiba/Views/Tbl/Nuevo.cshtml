@@ -1,0 +1,30 @@
+﻿@model  TestNuxiba.Models.ViewModels.VwViewModel
+@{
+    ViewBag.Title = "Nuevo";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Nuevo", "Tbl", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-12">
+            @Html.LabelFor(d => d.Login)
+            @Html.TextBoxFor(d => d.Login, "", new { @class = "form-control" })
+            @Html.LabelFor(d => d.Nombre)
+            @Html.TextBoxFor(d => d.Nombre, "", new { @class = "form-control" })
+            @Html.LabelFor(d => d.Paterno)
+            @Html.TextBoxFor(d => d.Paterno, "", new { @class = "form-control" })
+            @Html.LabelFor(d => d.Materno)
+            @Html.TextBoxFor(d => d.Materno, "", new { @class = "form-control" })
+            @Html.LabelFor(d => d.Sueldo)
+            @Html.TextBoxFor(d => d.Sueldo, "", new { @class = "form-control" })
+            @Html.LabelFor(d => d.FechaIngreso)<br />
+            @Html.EditorFor(d => d.FechaIngreso, "", new { @class = "form-control" })
+            <br />
+            <div style="text-align:right;">
+                <input value="Guardar" class="btn btn-primary" type="submit" />
+            </div>
+        </div>
+    </div>
+}
